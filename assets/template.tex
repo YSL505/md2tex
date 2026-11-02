@@ -1,0 +1,160 @@
+\documentclass{ctexart} % 默认正文字号11pt
+
+%\usepackage[draft]{graphicx} % 插入图片，draft参数用于生成草稿，将图片保存在当前目录下
+\usepackage{graphicx} % 插入图片，draft参数用于生成草稿，将图片保存在当前目录下
+\usepackage{geometry} % 调整纸张大小和边距
+\usepackage{booktabs} % 提供三线表的三条线:\toprule,\midrule,\bottomrule
+\usepackage{tabularray} % 新式表格:Q；可以部分替代tabularx
+%\useTblrLibrary{booktabs} % 在tblr中使用三线表需要这样的特殊引入booktabs
+% \usepackage{tabularx} % 自动调整表格宽度:X
+\usepackage{float} % 强行固定浮动体的位置
+\usepackage{fancyhdr} % 修改页眉、页脚更方便
+\usepackage{amsmath} % 必要的数学包
+\usepackage{amssymb} % 更全的数学符号集
+\usepackage{titlesec} % 用来修改标题样式
+\usepackage{setspace} % 设置行距
+\usepackage[ruled,linesnumbered]{algorithm2e} % 伪代码工具
+\usepackage[hidelinks,bookmarksnumbered]{hyperref} % 目录；首次加目录时要编译两次；hidelinks隐藏红色边框；bookmarksnumbered为目录书签添加编号，需要bookmark包配合
+\usepackage{bookmark} % 配合hyperref包中的bookmarksnumbered参数，此包应在hyperref包之后
+\usepackage{enumitem} % 调整enumerate环境中item的缩进以及标签和列表间的距离
+\usepackage{chngcntr} % 修改图表编号与章节相关
+\usepackage[titletoc]{appendix} % 附录；titletoc参数用于将附录添加到目录中
+\usepackage{gbt7714} % 参考文献样式——国标
+\usepackage{pifont} % 打印数字圈
+\usepackage{diagbox} % 支持表格中添加斜线
+\usepackage{threeparttable} % table注释
+\usepackage{listings} % 代码块
+\usepackage{pdfpages} % 插入pdf页面
+\usepackage{lipsum} % 生成测试文本
+\usepackage{multicol} % 分栏工具
+\usepackage[normalem]{ulem}  % 可以正常换行的下划线；参数normalem防止参考文献中的斜体变成带下划线的文字
+\usepackage{xcolor} % 定义颜色
+
+\definecolor{codebg}{RGB}{245,245,245}
+\definecolor{codekey}{RGB}{0,0,180}
+\definecolor{codecom}{RGB}{0,120,0}
+\definecolor{codestr}{RGB}{180,0,0}
+
+\geometry{left=2cm, right=2cm, top=2.41cm, bottom=2.41cm} % 需要geometry包；设置页边距
+
+\linespread{1.5} % 行距：基本行距的1.5倍；基本行距：正文字号的1.2倍
+
+\setmainfont{Times New Roman} % 设置英文字体为 Times New Roman
+
+\setcounter{secnumdepth}{5} % 章节编号深度
+\setcounter{tocdepth}{3} % 目录显示深度
+
+\setlist[enumerate]{leftmargin=4em}% 需要enumitem包；改变列表缩进
+
+\setlength{\columnsep}{20pt} % 设置两栏间距为20pt
+
+% 需要fancyhdr包；自定义页眉、页脚---
+%% 使用方法：\pagestyle{noFooter}
+\fancypagestyle{noFooter}{% 定义名为 "noFooter" 的样式
+  \fancyhf{} % 清空页眉、页脚
+  \chead{} % 设置页眉中
+  \cfoot{} % 设置页脚中，页码
+  \renewcommand{\headrulewidth}{0pt} % 取消页眉横线
+}
+\fancypagestyle{Footer}{% 定义名为 "Footer" 的样式
+  \fancyhf{}
+  \chead{}
+  \cfoot{\thepage}
+  \renewcommand{\headrulewidth}{0pt}
+}
+% ---
+
+% 需要titilesec；修改标题样式---
+\titleformat{\section}
+  {\heiti\large\bfseries} % 字体、字号、加粗
+  {\thesection}{1em}{} % 编号、编号与标题之间的距离
+\titleformat{\subsection}
+  {\heiti\normalsize\bfseries}
+  {\thesubsection}{1em}{}
+\titleformat{\subsubsection}
+  {\heiti\normalsize\mdseries}
+  {\thesubsubsection}{1em}{}
+\titleformat{\paragraph}
+  {\heiti\normalsize\mdseries}
+  {\theparagraph}{1em}{}
+\titleformat{\subparagraph}
+  {\heiti\normalsize\mdseries}
+  {\thesubparagraph}{1em}{}
+% ---
+
+% 需要chngcntr包；让图表编号在每个章节重置---
+\counterwithin{figure}{section}
+\counterwithin{table}{section}
+% ---
+
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}  % 图编号格式：2.1
+\renewcommand{\thetable}{\thesection.\arabic{table}} % 表编号格式：2.1
+
+\newcommand{\passthrough}[1]{#1} % 原样返回参数，Pandoc 在使用 --listings 参数时需要
+
+% 列表项之间、段落之间和额外间距清零
+\providecommand{\tightlist}{
+  \setlength{\itemsep}{0pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}
+% ---
+
+% 需要tabularray包；将跨页表格中的英文标志改成中文
+\DefTblrTemplate{contfoot-text}{chs}{接下页\dots}
+\SetTblrTemplate{contfoot-text}{chs}
+\DefTblrTemplate{conthead-text}{chs}{(续表)\dots}
+\SetTblrTemplate{conthead-text}{chs}
+% ---
+
+% 需要gbt7714包；设置参考文献样式
+% \bibliographystyle{gbt7714-numerical}
+% ---
+
+% 需要algorithm2e包；部分关键字改成中文---
+% \renewcommand{\algorithmcfname}{算法}
+% \SetKwInOut{KwIn}{输入} % 自定义输入命令显示为“输入”
+% \SetKwInOut{KwOut}{输出} % 自定义输出命令显示为“输出”
+% ---
+
+% 需要listings包；设置代码块样式 ---
+\lstset{
+  backgroundcolor=\color{codebg}, % 代码背景色
+  basicstyle=\ttfamily\small, % 基础字体：等宽字体+小字号
+  keywordstyle=\color{codekey}\bfseries, % 关键字样式：蓝色+加粗
+  commentstyle=\color{codecom}\itshape, % 注释样式：绿色+斜体
+  stringstyle=\color{codestr}, % 字符串样式：红色
+  numbers=left, % 行号位置：左侧
+  numberstyle=\tiny\color{gray}, % 行号样式：小字号+灰色
+  stepnumber=1, % 行号步长：每1行显示
+  numbersep=5pt, % 行号与代码的间距
+  frame=single, % 边框样式：单实线边框（可选：none无框、shadowbox阴影框）
+  breaklines=true, % 自动换行
+  tabsize=4, % Tab缩进大小
+  showspaces=false, % 不显示空格标记
+  showstringspaces=false % 不显示字符串内的空格标记
+}
+% ---
+
+% 文章标题、作者、日期---
+\title{$title$}
+\author{}
+\date{} % 不令其为空会使得生成标题的同时生成时间
+% ---
+
+% 正文---
+\begin{document}
+
+\maketitle
+\thispagestyle{noFooter} % 不知为什么，只有以这种方式标题页的页眉页脚设置才有效
+\clearpage % 标题单独一页
+\pagenumbering{roman} % 设置目录页码为小写罗马数字
+\pagestyle{Footer} % 自定义样式：有页码
+\tableofcontents % 生成目录；要编译两次
+\clearpage % 目录单独一页
+\pagenumbering{arabic} % 设置正文页码为阿拉伯数字
+
+$body$
+
+\end{document}
+% ---

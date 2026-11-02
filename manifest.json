@@ -1,0 +1,10 @@
+{
+  "id": "pandoc-export",
+  "name": "Pandoc Export (TeX → PDF)",
+  "version": "0.1.0",
+  "minAppVersion": "1.4.0",
+  "description": "把当前 Markdown 笔记经 pandoc（自定义模板 + Lua filter）导出为 .tex，再用 xelatex 编译为 PDF。",
+  "author": "",
+  "authorUrl": "",
+  "isDesktopOnly": true
+}
